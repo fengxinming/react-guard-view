@@ -1,0 +1,7 @@
+{
+  "extends": [
+    "fe",
+    "fe/react",
+    "fe/ts"
+  ]
+}
