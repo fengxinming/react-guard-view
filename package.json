@@ -1,0 +1,44 @@
+{
+  "name": "route-view",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A Higher-Order Route component with guard hooks.",
+  "scripts": {
+    "clean": "lerna clean --yes && rm -rf node_modules",
+    "deps": "tnpm install && lerna bootstrap",
+    "eslint": "eslint --fix --ext .js,.jsx ./"
+  },
+  "author": "Jesse Feng <fxm0016@126.com>",
+  "license": "MIT",
+  "dependencies": {
+    "eslint-config-fe": "^1.0.0",
+    "eslint-plugin-jsx-advanced": "^1.0.0",
+    "@babel/core": "^7.14.0",
+    "@babel/eslint-parser": "^7.13.14",
+    "@babel/eslint-plugin": "^7.13.16",
+    "@babel/preset-env": "^7.14.7",
+    "@babel/preset-react": "^7.13.13",
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^12.1.1",
+    "@typescript-eslint/eslint-plugin": "^4.28.2",
+    "@typescript-eslint/parser": "^4.28.2",
+    "eslint": "^7.19.0",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "husky": "^4.3.8",
+    "lerna": "^3.22.1",
+    "lint-staged": "^11.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "eslint --fix",
+      "git add"
+    ]
+  }
+}
