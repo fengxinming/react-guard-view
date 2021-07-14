@@ -1,17 +1,43 @@
 import { createElement } from 'react';
 import { Router as ReactRouter, Redirect, Route, Switch } from 'react-router';
-import { createName, pathJoin, createHistoryBy } from 'celia';
-import objectWithoutProperties from 'celia/es/objectWithoutProperties';
+import { createHashHistory, createBrowserHistory, createMemoryHistory } from 'history';
+import { objectWithoutProperties, pathJoin } from 'celia';
+
+function createName() {
+  return Math.random().toString(36).slice(2);
+}
+
+function createHistoryBy(mode, historyOptions) {
+  switch (mode) {
+    case 'hash':
+      return createHashHistory(historyOptions);
+    case 'history':
+      return createBrowserHistory(historyOptions);
+    case 'memory':
+      return createMemoryHistory(historyOptions);
+    default:
+      throw new Error(`invalid mode: ${mode}`);
+  }
+}
 
 function createRoute(
-  parentKey,
+  parentName,
   parentPath,
   route,
+  routeConfigCache,
 ) {
-  let { key } = route;
-  if (!key) {
-    key = `${parentKey}.${createName()}`;
-    route.key = key;
+  // 具名路由
+  let name = route.name || route.key;
+  if (!name) {
+    name = `${parentName}.${createName()}`;
+    route.key = name;
+    route.name = name;
+  }
+
+  // 解析了之后直接执行
+  const routeCache = routeConfigCache[name];
+  if (routeCache) {
+    return routeCache.render(routeCache.props);
   }
 
   let { path } = route;
@@ -22,12 +48,17 @@ function createRoute(
 
   const redirect = route.redirect || route.to;
   if (redirect) {
-    return createElement(Redirect, {
-      key,
+    const props = {
+      key: name,
       exact: true,
       from: path,
       to: redirect
-    }); // 跳转路由
+    };
+    const render = function (props) {
+      return createElement(Redirect, props); // 跳转路由
+    };
+    routeConfigCache[name] = { props, render };
+    return render(props);
   }
 
   const routeConfig = objectWithoutProperties(route, [
@@ -46,24 +77,29 @@ function createRoute(
     return render ? render(cprops) : createElement(component, cprops);
   };
 
-  return !children || !children.length
-    ? createElement(Route, routeConfig)
-    : createElement(
-      component,
-      { key: `${key}-component`, route: routeConfig },
-      createSwitch(key, path, children)
-    ); // 如果有子路由，先创建对应的组件，再递归创建 Route
+  const routeRender = function (props) {
+    return !children || !children.length
+      ? createElement(Route, props)
+      : createElement(
+        component,
+        { key: `${name}-component`, route: props },
+        createSwitch(name, path, children, routeConfigCache)
+      ); // 如果有子路由，先创建对应的组件，再递归创建 Route
+  };
+  routeConfigCache[name] = { props: routeConfig, render: routeRender };
+  return routeRender(routeConfig);
 }
 
-function createSwitch(parentKey, parentPath, routes) {
+function createSwitch(parentName, parentPath, routes, routeConfigCache) {
   return createElement(
     Switch,
     null,
     routes.map((route) => {
       return createRoute(
-        parentKey,
+        parentName,
         parentPath,
-        route
+        route,
+        routeConfigCache
       );
     })
   );
@@ -74,6 +110,7 @@ export function create({
   routes
 }) {
   const history = createHistoryBy(mode);
+  const routeConfigCache = {};
 
   return {
     history,
@@ -81,11 +118,12 @@ export function create({
     Router() {
       return createElement(
         ReactRouter,
-        { history, key: 'router' },
+        { history },
         createSwitch(
           'router',
           '',
-          routes
+          routes,
+          routeConfigCache
         )
       );
     }
