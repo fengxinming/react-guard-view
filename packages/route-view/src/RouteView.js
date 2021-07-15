@@ -11,23 +11,23 @@ import parseQuery from 'fast-qs/es/parseQuery';
  */
 function enhanceRouteInfo(propsFromRoute) {
   const { history, location, match, route = {} } = propsFromRoute;
-  const { previousRouteInfo } = history;
-  let { currentRouteInfo } = history;
+  const { $from } = history;
+  let { $to } = history;
 
-  // 单独使用的情况下 history 没有 currentRouteInfo 属性
-  if (!currentRouteInfo) {
-    currentRouteInfo = {
+  // 单独使用的情况下 history 没有 $to 属性
+  if (!$to) {
+    $to = {
       history
     };
-    history.currentRouteInfo = currentRouteInfo;
+    history.$to = $to;
   }
 
-  currentRouteInfo.name = route.name || route.key;
-  currentRouteInfo.location = location;
-  currentRouteInfo.match = match;
-  currentRouteInfo.meta = route.meta;
-  if (!currentRouteInfo.query) {
-    Object.defineProperty(currentRouteInfo, 'query', {
+  $to.name = route.name || route.key;
+  $to.location = location;
+  $to.match = match;
+  $to.meta = route.meta;
+  if (!$to.query) {
+    Object.defineProperty($to, 'query', {
       get() {
         let { _query } = this;
         if (!_query) {
@@ -39,7 +39,7 @@ function enhanceRouteInfo(propsFromRoute) {
     });
   }
 
-  return { currentRouteInfo, previousRouteInfo };
+  return { $to, $from };
 }
 
 /**
@@ -55,20 +55,20 @@ export default class RouteView extends Component {
     // 需要更新时，不运行钩子队列
     if (!prevState.shouldUpdate) {
       callAsync(() => {
-        const { currentRouteInfo, previousRouteInfo } = enhanceRouteInfo(nextProps.propsFromRoute);
+        const { $to, $from } = enhanceRouteInfo(nextProps.propsFromRoute);
 
         // 异步执行钩子队列
         runQueue(
           nextProps.beforeHooks,
           (hook, next) => {
-            hook(currentRouteInfo, previousRouteInfo, (to) => {
+            hook($to, $from, (to) => {
               switch (typeof to) {
                 case 'string':
-                  currentRouteInfo.history.push(to);
+                  $to.history.push(to);
                   break;
                 case 'object':
                   if (typeof to.pathname === 'string' || typeof to.name === 'string') {
-                    currentRouteInfo.history[to.replace ? 'replace' : 'push'](to);
+                    $to.history[to.replace ? 'replace' : 'push'](to);
                   }
                   break;
                 case 'boolean':
@@ -110,10 +110,10 @@ export default class RouteView extends Component {
 
     // 路由视图组件被加载后执行的钩子
     const { propsFromRoute, afterHooks } = this.props;
-    const { currentRouteInfo, previousRouteInfo } = propsFromRoute.history;
+    const { $to, $from } = propsFromRoute.history;
 
     afterHooks.forEach((hook) => {
-      hook(currentRouteInfo, previousRouteInfo);
+      hook($to, $from);
     });
   }
 
@@ -130,3 +130,4 @@ export default class RouteView extends Component {
     return createElement(props.component, props.propsFromRoute);
   }
 }
+
