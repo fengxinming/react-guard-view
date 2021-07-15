@@ -1,5 +1,4 @@
-import createRouteView from '@alife/route-view/es/create';
-import { create } from '../common/router';
+import create from 'route-view/es/create';
 import BasicLayout from '../layouts/BasicLayout';
 import Devices from '../pages/devices';
 import Guide from '../pages/guide';
@@ -7,18 +6,29 @@ import Monitor from '../pages/monitor';
 import System from '../pages/system';
 import Tasks from '../pages/tasks';
 import Login from '../pages/login';
+import { create as createRouter } from '../common/router';
 
-const { connect } = createRouteView({
+const { connect } = create({
   beforeEach(to, from, next) {
     console.info('beforeEach', 'to', to, 'from', from);
+    if (to.name !== 'login') {
+      if (!sessionStorage.getItem('token')) {
+        return next('/login');
+      }
+    }
+    else if (sessionStorage.getItem('token')) {
+      return next('/');
+    }
     next();
   }
 });
+
 const routes = [
   {
+    name: 'login',
     path: '/login',
     exact: true,
-    component: Login
+    component: connect(Login)
   },
   {
     path: '/',
@@ -77,9 +87,9 @@ const routes = [
   }
 ];
 
-const { Router, history } = create({
+const { history, Router } = createRouter({
   mode: 'hash',
   routes
 });
 
-export { Router, history };
+export { history, Router };

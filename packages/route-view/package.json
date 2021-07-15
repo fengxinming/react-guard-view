@@ -32,5 +32,9 @@
     "rollup-plugin-empty": "^1.0.0",
     "rollup-plugin-match": "^1.0.0",
     "rollup-plugin-replace-imports": "^1.0.0"
+  },
+  "dependencies": {
+    "celia": "^8.0.3",
+    "fast-qs": "^1.0.0"
   }
 }

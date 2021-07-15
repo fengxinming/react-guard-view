@@ -14,9 +14,13 @@ $header-height: 50px;
   & > a {
     margin-left: 24px;
   }
-  img {
+  .logo {
     width: 88px;
+    height: 100%;
+    display: inline-block;
     vertical-align: middle;
+    font-size: 32px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
 }
 

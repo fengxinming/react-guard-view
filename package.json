@@ -1,11 +1,9 @@
 {
-  "name": "route-view",
   "version": "1.0.0",
   "private": true,
   "description": "A Higher-Order Route component with guard hooks.",
   "scripts": {
-    "clean": "lerna clean --yes && rm -rf node_modules",
-    "deps": "tnpm install && lerna bootstrap",
+    "deps": "pnpm install",
     "eslint": "eslint --fix --ext .js,.jsx ./"
   },
   "author": "Jesse Feng <fxm0016@126.com>",
@@ -20,8 +18,8 @@
     "@babel/preset-react": "^7.13.13",
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^12.1.1",
-    "@typescript-eslint/eslint-plugin": "^4.28.2",
-    "@typescript-eslint/parser": "^4.28.2",
+    "@typescript-eslint/eslint-plugin": "^4.28.3",
+    "@typescript-eslint/parser": "^4.28.3",
     "eslint": "^7.19.0",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",

@@ -1,7 +1,7 @@
 import { createElement, Component } from 'react';
 import callAsync from 'celia/es/callAsync';
 import runQueue from 'celia/es/runQueue';
-import parseQuery from 'fast-qs/es/parseQuery';
+import parseQuery from 'fast-qs/es/parse';
 
 /**
  * 构造钩子函数需要的

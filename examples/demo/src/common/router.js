@@ -30,7 +30,6 @@ function createRoute(
   let name = route.name || route.key;
   if (!name) {
     name = `${parentName}.${createName()}`;
-    route.key = name;
     route.name = name;
   }
 
@@ -69,6 +68,7 @@ function createRoute(
     'children'
   ]);
   routeConfig.path = path;
+  routeConfig.key = name;
 
   const { component, children, render } = route;
 

@@ -9,6 +9,8 @@ if (!BUNDLE) {
 }
 
 ReactDOM.render(
-  <Router />,
+  (
+    <Router />
+  ),
   BUNDLE,
 );

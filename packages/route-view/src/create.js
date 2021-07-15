@@ -46,7 +46,7 @@ export default function create({
     connect(component, {
       beforeEnter,
       afterEnter
-    }) {
+    } = {}) {
       beforeEnter = beforeEnter
         ? beforeHooks.concat(beforeEnter)
         : beforeHooks;

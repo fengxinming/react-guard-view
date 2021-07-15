@@ -2,7 +2,6 @@ import styles from './index.module.scss';
 import React from 'react';
 import { Layout, SilderNav } from '@linkdesign/components';
 import aside from '@/config/aside';
-import logo from './logo.png';
 
 const Panel = Layout.panel;
 
@@ -13,7 +12,7 @@ function BasicLayout({ children, location }) {
     <>
       <div className={styles.header}>
         <a href="#/">
-          <img src={logo} alt="" />
+          <span className={styles.logo}>LOGO</span>
         </a>
       </div>
       <div className={styles.body}>
