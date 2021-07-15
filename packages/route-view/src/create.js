@@ -25,8 +25,8 @@ export default function create({
   const listen = function (history) {
     if (!unlisten) {
       unlisten = history.listen(() => {
-        history.previousRouteInfo = history.currentRouteInfo;
-        history.currentRouteInfo = null;
+        history.$from = history.$to;
+        history.$to = null;
       });
     }
   };
@@ -65,6 +65,7 @@ export default function create({
 
       return function (propsFromRoute) {
         listen(propsFromRoute.history);
+
         return createElement(RouteView, {
           propsFromRoute: propsFromRoute,
           component,
