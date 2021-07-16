@@ -2,6 +2,9 @@ import { createElement, Component } from 'react';
 import callAsync from 'celia/es/callAsync';
 import runQueue from 'celia/es/runQueue';
 import parseQuery from 'fast-qs/es/parse';
+import warn from 'celia/es/warn';
+import isError from 'celia/es/isError';
+import callHook from './callHook';
 
 /**
  * 构造钩子函数需要的
@@ -54,32 +57,28 @@ export default class RouteView extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     // 需要更新时，不运行钩子队列
     if (!prevState.shouldUpdate) {
+      const { onError } = nextProps;
+      const { update } = prevState;
+      const done = (ret) => {
+        if (isError(ret)) {
+          if (onError) {
+            onError(ret);
+            return;
+          }
+          warn(ret);
+          return;
+        }
+        update();
+      };
       callAsync(() => {
         const { $to, $from } = enhanceRouteInfo(nextProps.propsFromRoute);
-
         // 异步执行钩子队列
         runQueue(
           nextProps.beforeHooks,
           (hook, next) => {
-            hook($to, $from, (to) => {
-              switch (typeof to) {
-                case 'string':
-                  $to.history.push(to);
-                  break;
-                case 'object':
-                  if (typeof to.pathname === 'string' || typeof to.name === 'string') {
-                    $to.history[to.replace ? 'replace' : 'push'](to);
-                  }
-                  break;
-                case 'boolean':
-                  to === false && prevState.update();
-                  break;
-                default:
-                  next();
-              }
-            });
+            callHook(hook, $to, $from, next, done);
           },
-          prevState.update
+          done
         );
       });
     }
@@ -130,4 +129,3 @@ export default class RouteView extends Component {
     return createElement(props.component, props.propsFromRoute);
   }
 }
-
