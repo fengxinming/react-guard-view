@@ -44,6 +44,7 @@ export default function create({
      * @returns
      */
     connect(component, {
+      name,
       beforeEnter,
       afterEnter
     } = {}) {
@@ -66,6 +67,7 @@ export default function create({
         listen(propsFromRoute.history);
 
         return createElement(RouteView, {
+          name,
           propsFromRoute: propsFromRoute,
           component,
           beforeHooks: beforeEnter,
