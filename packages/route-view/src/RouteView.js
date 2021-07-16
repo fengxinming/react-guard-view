@@ -121,11 +121,9 @@ export default class RouteView extends Component {
   }
 
   render() {
-    if (!this.mounted) {
-      return null;
-    }
-
     const { props } = this;
-    return createElement(props.component, props.propsFromRoute);
+    return this.mounted
+      ? createElement(props.component, props.propsFromRoute)
+      : props.fallback || null;
   }
 }
