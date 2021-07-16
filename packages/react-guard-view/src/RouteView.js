@@ -9,11 +9,11 @@ import callHook from './callHook';
 /**
  * 构造钩子函数需要的
  *
+ * @param {string} name
  * @param {object} propsFromRoute
  * @returns
  */
-function enhanceRouteInfo(props) {
-  const { name, propsFromRoute } = props;
+function enhanceRouteInfo(name, propsFromRoute) {
   const { history, location, match, route = {} } = propsFromRoute;
   const { $from } = history;
   let { $to } = history;
@@ -60,30 +60,33 @@ export default class RouteView extends Component {
     // 需要更新时，不运行钩子队列
     if (!prevState.shouldUpdate) {
       const { onError } = nextProps;
-      const { update } = prevState;
+
       callAsync(() => {
-        const { $to, $from } = enhanceRouteInfo(nextProps);
+        const { onError, name, propsFromRoute, beforeHooks } = nextProps;
+        const { update } = prevState;
 
         // 钩子函数运行后执行
         const done = (ret) => {
           if (isError(ret)) {
             warn(ret);
-            onError && onError(ret, $to, $from);
+            onError && onError(ret, nextProps);
             return;
           }
           update();
         };
 
+        const { $to, $from } = enhanceRouteInfo(name, propsFromRoute);
+
         // 异步执行钩子队列
         runQueue(
-          nextProps.beforeHooks,
+          beforeHooks,
           (hook, next) => {
             callHook(hook, $to, $from, next, done);
           },
           done
-        ).catch((err) => {
-          onError && onError(err, $to, $from);
-        });
+        );
+      }).catch((err) => {
+        onError && onError(err, nextProps);
       });
     }
 
@@ -130,3 +133,4 @@ export default class RouteView extends Component {
       : props.fallback || null;
   }
 }
+
