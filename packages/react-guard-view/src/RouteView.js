@@ -62,7 +62,7 @@ export default class RouteView extends Component {
       const { onError } = nextProps;
 
       callAsync(() => {
-        const { onError, name, propsFromRoute, beforeHooks } = nextProps;
+        const { onError } = nextProps;
         const { update } = prevState;
 
         // 钩子函数运行后执行
@@ -75,11 +75,11 @@ export default class RouteView extends Component {
           update();
         };
 
-        const { $to, $from } = enhanceRouteInfo(name, propsFromRoute);
+        const { $to, $from } = enhanceRouteInfo(nextProps.name, nextProps.propsFromRoute);
 
         // 异步执行钩子队列
         runQueue(
-          beforeHooks,
+          nextProps.beforeHooks,
           (hook, next) => {
             callHook(hook, $to, $from, next, done);
           },
@@ -133,4 +133,3 @@ export default class RouteView extends Component {
       : props.fallback || null;
   }
 }
-
