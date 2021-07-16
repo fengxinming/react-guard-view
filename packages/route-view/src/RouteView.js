@@ -12,7 +12,8 @@ import callHook from './callHook';
  * @param {object} propsFromRoute
  * @returns
  */
-function enhanceRouteInfo(propsFromRoute) {
+function enhanceRouteInfo(props) {
+  const { name, propsFromRoute } = props;
   const { history, location, match, route = {} } = propsFromRoute;
   const { $from } = history;
   let { $to } = history;
@@ -25,7 +26,7 @@ function enhanceRouteInfo(propsFromRoute) {
     history.$to = $to;
   }
 
-  $to.name = route.name || route.key;
+  $to.name = name || route.name || route.key;
   $to.location = location;
   $to.match = match;
   $to.meta = route.meta;
@@ -49,6 +50,7 @@ function enhanceRouteInfo(propsFromRoute) {
  * 用于控制 beforeHooks 调用完之后更新视图组件
  *
  * component
+ * fallback
  * propsFromRoute
  * beforeHooks
  * afterHooks
@@ -71,7 +73,7 @@ export default class RouteView extends Component {
         update();
       };
       callAsync(() => {
-        const { $to, $from } = enhanceRouteInfo(nextProps.propsFromRoute);
+        const { $to, $from } = enhanceRouteInfo(nextProps);
         // 异步执行钩子队列
         runQueue(
           nextProps.beforeHooks,
@@ -96,7 +98,6 @@ export default class RouteView extends Component {
         });
       }
     };
-    this.mounted = false;
   }
 
   shouldComponentUpdate(nextProps, nextState) {
