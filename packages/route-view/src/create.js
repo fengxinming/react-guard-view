@@ -58,7 +58,6 @@ export default function create({
       // 如果没有定义钩子函数，就直接渲染组件
       if (!beforeEnter.length && !afterEnter.length) {
         return function (propsFromRoute) {
-          listen(propsFromRoute.history);
           return createElement(component, propsFromRoute);
         };
       }
