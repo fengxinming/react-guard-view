@@ -1,5 +1,5 @@
 {
-  "name": "route-view",
+  "name": "react-guard-view",
   "version": "1.0.0",
   "description": "A Higher-Order Route component with guard hooks.",
   "main": "index.js",

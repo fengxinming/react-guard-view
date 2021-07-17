@@ -1,4 +1,4 @@
-import create from 'route-view/es/create';
+import create from 'react-guard-view/es/create';
 import BasicLayout from '../layouts/BasicLayout';
 import Devices from '../pages/devices';
 import Guide from '../pages/guide';

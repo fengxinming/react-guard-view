@@ -1,2 +1,3 @@
-# route-view
-A Higher-Order Route component with guard hooks.
+# react-guard-view
+
+> A Higher-Order Route component with guard hooks.

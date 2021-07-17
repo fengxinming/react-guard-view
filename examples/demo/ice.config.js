@@ -11,8 +11,8 @@ module.exports = {
   ],
   alias: {
     '@': path.join(__dirname, './src'),
-    'route-view/es': path.join(__dirname, '../../packages/route-view/src'),
-    'route-view': path.join(__dirname, '../../packages/route-view/src')
+    'react-guard-view/es': path.join(__dirname, '../../packages/react-guard-view/src'),
+    'react-guard-view': path.join(__dirname, '../../packages/react-guard-view/src')
   },
   devServer: {
     headers: {
