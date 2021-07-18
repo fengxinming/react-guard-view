@@ -93,7 +93,7 @@ export default function () {
       </div>
       <div className={styles.aside}>
         <h2>欢迎访问</h2>
-        <p>边缘一体机管理控制台</p>
+        <p>本地控制台</p>
       </div>
       <div
         className={styles.content}
