@@ -20,7 +20,8 @@
 }
 
 .content {
-  background: url('/public/assets/login-bg.jpg') no-repeat center center;
+  background-position: center center;
+  background-repeat: no-repeat;
   background-size: cover;
   min-height: calc(100vh - 48px);
 }

@@ -1,8 +1,9 @@
 import styles from './index.module.scss';
 import React, { useState, useCallback } from 'react';
-import { Input, Form, Message, Icon } from '@alicloud/console-components';
+import { Input, Form, Message } from '@alicloud/console-components';
 import { history } from '@/config/routes';
 import { stashToken } from '@/common/user';
+import bg from './login-bg.jpg';
 
 const FormItem = Form.Item;
 
@@ -94,7 +95,10 @@ export default function () {
         <h2>欢迎访问</h2>
         <p>边缘一体机管理控制台</p>
       </div>
-      <div className={styles.content}>
+      <div
+        className={styles.content}
+        style={{ backgroundImage: `url(${bg})` }}
+      >
         <LoginForm />
       </div>
     </div>
