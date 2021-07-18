@@ -88,7 +88,7 @@ export default function () {
   return (
     <div className={styles['login-layout']}>
       <div className={styles.header}>
-        <Icon type="Group1" size="medium" />
+        <span className={styles.logo}>LOGO</span>
       </div>
       <div className={styles.aside}>
         <h2>欢迎访问</h2>

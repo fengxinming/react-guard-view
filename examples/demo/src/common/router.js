@@ -107,9 +107,10 @@ function createSwitch(parentName, parentPath, routes, routeConfigCache) {
 
 export function create({
   mode,
-  routes
+  routes,
+  ...historyOptions
 }) {
-  const history = createHistoryBy(mode);
+  const history = createHistoryBy(mode, historyOptions);
   const routeConfigCache = {};
 
   return {
