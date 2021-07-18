@@ -5,7 +5,7 @@
   "scripts": {
     "deps": "pnpm install",
     "eslint": "eslint --fix --ext .js,.jsx ./",
-    "gh-pages": "pnpm run build --filter=demo && git subtree push --prefix=examples/demo/build origin gh-pages"
+    "gh-pages": "git subtree push --prefix=gh-pages origin gh-pages"
   },
   "author": "Jesse Feng <fxm0016@126.com>",
   "license": "MIT",

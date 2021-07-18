@@ -4,6 +4,7 @@ const pkg = require('./package.json');
 module.exports = {
   entry: 'src/index.jsx',
   filename: `[name].js?v=${pkg.version}`,
+  outputDir: '../../gh-pages',
   plugins: [
     ['ice-plugin-moment-locales', {
       locales: ['zh-cn']
