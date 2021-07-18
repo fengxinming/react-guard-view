@@ -9,13 +9,11 @@ import callHook from './callHook';
 /**
  * 构造钩子函数需要的
  *
- * @param {string} name
- * @param {object} propsFromRoute
- * @returns
+ * @param {object} props
+ * @returns {object}
  */
-function enhanceRouteInfo(name, propsFromRoute) {
+function enhanceRouteInfo({ name, meta, propsFromRoute }) {
   const { history, location, match, route = {} } = propsFromRoute;
-  const { $from } = history;
   let { $to } = history;
 
   // 单独使用的情况下 history 没有 $to 属性
@@ -27,9 +25,10 @@ function enhanceRouteInfo(name, propsFromRoute) {
   }
 
   $to.name = name || route.name || route.key;
+  $to.meta = meta || route.meta;
   $to.location = location;
   $to.match = match;
-  $to.meta = route.meta;
+
   if (!$to.query) {
     Object.defineProperty($to, 'query', {
       get() {
@@ -43,7 +42,7 @@ function enhanceRouteInfo(name, propsFromRoute) {
     });
   }
 
-  return { $to, $from };
+  return $to;
 }
 
 /**
@@ -75,7 +74,8 @@ export default class RouteView extends Component {
           update();
         };
 
-        const { $to, $from } = enhanceRouteInfo(nextProps.name, nextProps.propsFromRoute);
+        const { $from } = nextProps.propsFromRoute.history;
+        const $to = enhanceRouteInfo(nextProps);
 
         // 异步执行钩子队列
         runQueue(
