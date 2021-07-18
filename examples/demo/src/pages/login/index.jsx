@@ -2,6 +2,7 @@ import styles from './index.module.scss';
 import React, { useState, useCallback } from 'react';
 import { Input, Form, Message, Icon } from '@alicloud/console-components';
 import { history } from '@/config/routes';
+import { stashToken } from '@/common/user';
 
 const FormItem = Form.Item;
 
@@ -31,7 +32,7 @@ function useMain() {
     setState((prev) => ({ ...prev, loading: true }));
     setTimeout(() => {
       setState((prev) => ({ ...prev, loading: false }));
-      sessionStorage.setItem('token', '123456');
+      stashToken(123456);
       history.push('/guide');
     }, 200);
   }, [setState]);
@@ -51,8 +52,8 @@ function LoginForm() {
     <h2 className={styles['login-frame']}>
       <div className={styles['login-box']}>
         <h3>管理员登录</h3>
-        <div x-class={[styles['login-error'], { [styles.blank]: !errorMessage }]}>
-          <Message x-if={errorMessage} type="warning">{errorMessage}</Message>
+        <div i-class={[styles['login-error'], { [styles.blank]: !errorMessage }]}>
+          <Message i-if={errorMessage} type="warning">{errorMessage}</Message>
         </div>
         <Form value={value} onChange={formChange}>
           <FormItem className={styles.formItem}>
@@ -83,14 +84,15 @@ function LoginForm() {
 }
 
 export default function () {
+
   return (
     <div className={styles['login-layout']}>
       <div className={styles.header}>
-        <span className={styles.logo}>LOGO</span>
+        <Icon type="Group1" size="medium" />
       </div>
       <div className={styles.aside}>
         <h2>欢迎访问</h2>
-        <p>本地控制台</p>
+        <p>边缘一体机管理控制台</p>
       </div>
       <div className={styles.content}>
         <LoginForm />
