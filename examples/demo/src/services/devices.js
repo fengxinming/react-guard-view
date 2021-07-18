@@ -1,6 +1,6 @@
 import http from '@/common/http';
 import { forEach, page } from 'celia';
-import moment from 'moment;
+import moment from 'moment';
 
 const list = [];
 forEach(40, (num) => {
@@ -8,7 +8,7 @@ forEach(40, (num) => {
     id: `产品${num}`,
     ProductKey: Math.random().toString(36).substr(4),
     NodeType: '设备',
-    UpdateTime: fastDateFormat(new Date()),
+    UpdateTime: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
     Status: num % 3 === 0
   });
 });

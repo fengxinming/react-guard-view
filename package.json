@@ -4,7 +4,8 @@
   "description": "A Higher-Order Route component with guard hooks.",
   "scripts": {
     "deps": "pnpm install",
-    "eslint": "eslint --fix --ext .js,.jsx ./"
+    "eslint": "eslint --fix --ext .js,.jsx ./",
+    "gh-pages": "pnpm run build --filter=demo && git subtree push --prefix=examples/demo/build origin gh-pages"
   },
   "author": "Jesse Feng <fxm0016@126.com>",
   "license": "MIT",

@@ -16,8 +16,23 @@ const { connect } = createRouteView({
     console.info('beforeEach', 'to', to, 'from', from);
 
     const { name } = to;
-    if ((name === 'login' && isLogin())
-      || (name === 'inactive' && isActive())) {
+    if (!isLogin()) {
+      if (name !== 'login') {
+        to.history.push('/login');
+        return;
+      }
+    }
+    else if (name === 'login') {
+      to.history.push('/');
+      return;
+    }
+    else if (!isActive()) {
+      if (name !== 'inactive') {
+        to.history.push('/inactive');
+        return;
+      }
+    }
+    else if (name === 'inactive') {
       to.history.push('/');
       return;
     }
