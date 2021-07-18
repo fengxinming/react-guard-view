@@ -44,7 +44,6 @@ export default function create({
      * @returns
      */
     connect(component, {
-      name,
       beforeEnter,
       afterEnter
     } = {}) {
@@ -59,6 +58,7 @@ export default function create({
       // 如果没有定义钩子函数，就直接渲染组件
       if (!beforeEnter.length && !afterEnter.length) {
         return function (propsFromRoute) {
+          listen(propsFromRoute.history);
           return createElement(component, propsFromRoute);
         };
       }
@@ -67,7 +67,6 @@ export default function create({
         listen(propsFromRoute.history);
 
         return createElement(RouteView, {
-          name,
           propsFromRoute: propsFromRoute,
           component,
           beforeHooks: beforeEnter,
