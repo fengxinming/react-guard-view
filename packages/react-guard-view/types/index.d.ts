@@ -10,10 +10,11 @@ export interface IRouteInfo {
   meta?: any;
 }
 
-export type Next = (stop?: boolean) => void;
-export type NextRedirect = (location: string | Location) => void;
+export type Next = (done?: boolean) => void;
+export type NextRedirect = (location?: string | Location) => void;
+export type NextError = (err?: Error) => void;
 
-export type BeforeEnter = (to: IRouteInfo, from: IRouteInfo, next: Next | NextRedirect) => void;
+export type BeforeEnter = (to: IRouteInfo, from: IRouteInfo, next: Next | NextError | NextRedirect) => void;
 export type AfterEnter = (to: IRouteInfo, from: IRouteInfo) => void;
 
 export type ConnectionRouteComponent = (route: RouteComponentProps) => React.ReactComponentElement;
@@ -31,13 +32,17 @@ export interface ICreatedResult {
 }
 
 export interface IRouteViewProps {
+  onError: ErrorHandler;
   propsFromRoute: RouteComponentProps,
   component: React.Component,
   beforeHooks: BeforeEnter[],
   afterHooks: AfterEnter[]
 }
 
+export type ErrorHandler = (err: Error, props: IRouteViewProps) => void;
+
 export function create(config: {
+  onError: ErrorHandler;
   beforeEach: BeforeEnter | BeforeEnter[],
   afterEach: AfterEnter | AfterEnter[]
 }): ICreatedResult;
