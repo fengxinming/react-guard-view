@@ -1,4 +1,4 @@
-import createRouteView from 'react-guard-view/es/create';
+import createRouteView from 'react-route-view/es/create';
 import { create } from '../common/router';
 import BasicLayout from '../layouts/BasicLayout';
 import Devices from '../pages/devices';
