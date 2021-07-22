@@ -8,15 +8,15 @@
 
 ## 路由初始化流程
 
-![undefined](https://intranetproxy.alipay.com/skylark/lark/0/2021/png/269345/1626838881876-4c73b5a9-40cc-4e75-b8d3-b1a2938495a5.png) 
+![image](https://user-images.githubusercontent.com/6262382/126643754-f4149852-083e-4230-ad38-15abfae15c8a.png)
 
 ## 路由切换流程
 
-![undefined](https://intranetproxy.alipay.com/skylark/lark/0/2021/png/269345/1626838917078-e4bef330-a8c8-4de0-852b-c75198dcdd2f.png) 
+![image](https://user-images.githubusercontent.com/6262382/126643755-c36bab0b-9843-4c27-9be1-b6aa4d10ccde.png)
 
 ## 内部流程
 
-![undefined](https://intranetproxy.alipay.com/skylark/lark/0/2021/png/269345/1626838974035-876380d3-709d-4d7a-b853-99651d47733b.png) 
+![image](https://user-images.githubusercontent.com/6262382/126643777-21634657-cc7d-4c02-b129-961c7e4ef092.png)
 
 ## 导航流程
 
