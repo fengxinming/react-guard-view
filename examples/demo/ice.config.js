@@ -4,7 +4,7 @@ const pkg = require('./package.json');
 module.exports = {
   entry: 'src/index.jsx',
   filename: `[name].js?v=${pkg.version}`,
-  publicPath: '/react-guard-view/',
+  publicPath: '/react-route-view/',
   outputDir: '../../gh-pages',
   plugins: [
     ['ice-plugin-moment-locales', {
@@ -13,8 +13,8 @@ module.exports = {
   ],
   alias: {
     '@': path.join(__dirname, './src'),
-    'react-guard-view/es': path.join(__dirname, '../../packages/react-guard-view/src'),
-    'react-guard-view': path.join(__dirname, '../../packages/react-guard-view/src')
+    'react-route-view/es': path.join(__dirname, '../../packages/react-route-view/src'),
+    'react-route-view': path.join(__dirname, '../../packages/react-route-view/src')
   },
   devServer: {
     headers: {
