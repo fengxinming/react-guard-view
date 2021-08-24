@@ -1,5 +1,6 @@
 import { createElement } from 'react';
 import RouteView from './RouteView';
+import registerHook from './registerHook';
 
 /**
  * 用于创建连接函数
@@ -8,33 +9,40 @@ import RouteView from './RouteView';
  * @returns
  */
 export default function create({
-  onError,
-  beforeEach,
-  afterEach
+  onError
 } = {}) {
-  let beforeHooks = [];
-  let afterHooks = [];
-
-  if (beforeEach) {
-    beforeHooks = beforeHooks.concat(beforeEach);
-  }
-  if (afterEach) {
-    afterHooks = afterHooks.concat(afterEach);
-  }
-
+  const beforeHooks = [];
+  const afterHooks = [];
+  const beforeRenders = [];
   let unlisten;
-  const listen = function (history) {
+  const listen = function (propsFromRoute) {
     if (!unlisten) {
+      const { history } = propsFromRoute;
       unlisten = history.listen(() => {
         history.$from = history.$to;
         history.$to = null;
       });
     }
+    beforeRenders.forEach((fn) => {
+      fn(propsFromRoute);
+    });
   };
 
   return {
     unlisten() {
       unlisten && unlisten();
+    },
+
+    beforeRender(fn) {
+      return registerHook(beforeRenders, fn);
+    },
+
+    beforeEach(fn) {
+      return registerHook(beforeHooks, fn);
+    },
+
+    afterEach(fn) {
+      return registerHook(afterHooks, fn);
     },
 
     /**
@@ -61,12 +69,15 @@ export default function create({
       // 如果没有定义钩子函数，就直接渲染组件
       if (!beforeEnter.length && !afterEnter.length) {
         return function (propsFromRoute) {
+          beforeRenders.forEach((fn) => {
+            fn(propsFromRoute);
+          });
           return createElement(component, propsFromRoute);
         };
       }
 
       return function (propsFromRoute) {
-        listen(propsFromRoute.history);
+        listen(propsFromRoute);
 
         return createElement(RouteView, {
           name,
