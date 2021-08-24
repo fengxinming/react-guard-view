@@ -1,9 +1,6 @@
 import { createElement, Component } from 'react';
-import callAsync from 'celia/es/callAsync';
-import runQueue from 'celia/es/runQueue';
-import parseQuery from 'fast-qs/es/parse';
-import warn from 'celia/es/warn';
-import isError from 'celia/es/isError';
+import { callAsync, runQueue, warn, isError } from 'celia';
+import { parseQuery } from 'fast-qs';
 import callHook from './callHook';
 
 /**
